@@ -1,3 +1,4 @@
-__all__ = ["main"]
+__all__ = ["main", "krpc_client"]
 
 from .main import *
+from .krpc_client import *
