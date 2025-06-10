@@ -1,12 +1,16 @@
 import hashlib
 import json
 from datetime import datetime, timedelta
-from typing import Optional, Dict, Any
+from typing import Optional
 from localStoragePy import localStoragePy
+from .config import get_app_id
+from .krpc_client import get_service_rpc_client
 
-from .main import BS_SERVICE_VERIFY_HUB, get_service_rpc_client, get_app_id
+BS_SERVICE_VERIFY_HUB = "verify_hub"
+
 
 localStorage = localStoragePy()
+
 
 class AccountInfo:
     def __init__(self, user_name: str, user_id: str, user_type: str, session_token: str):

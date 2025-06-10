@@ -2,7 +2,7 @@ import json
 import time
 from enum import Enum
 from typing import Optional, Any
-
+from .config import get_bucky_os_config, get_account_info
 import requests
 
 
@@ -82,3 +82,22 @@ class kRPCClient:
             raise RPCError(f"RPC response parsing failed: {str(e)}")
         except Exception as e:
             raise RPCError(f"Unexpected error: {str(e)}")
+
+
+def get_zone_service_url(service_name: str) -> str:
+    if not get_bucky_os_config():
+        raise Exception("BuckyOS WebSDK is not initialized, call init_bucky_os first")
+    return f"{get_bucky_os_config().default_protocol}{get_bucky_os_config().zone_host_name}/kapi/{service_name}"
+
+
+def get_service_rpc_client(service_name: str) -> kRPCClient:
+    if not get_bucky_os_config():
+        print("BuckyOS WebSDK is not initialized, call init_bucky_os first")
+        raise Exception("BuckyOS WebSDK is not initialized, call init_bucky_os first")
+
+    session_token = None
+    account_info = get_account_info()
+    if account_info and hasattr(account_info, 'session_token'):
+        session_token = account_info.session_token
+
+    return kRPCClient(get_zone_service_url(service_name), session_token)
