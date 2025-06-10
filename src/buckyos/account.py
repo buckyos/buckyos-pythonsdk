@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 from localStoragePy import localStoragePy
 
-from main import BS_SERVICE_VERIFY_HUB, get_service_rpc_client, get_app_id
+from .main import BS_SERVICE_VERIFY_HUB, get_service_rpc_client, get_app_id
 
 localStorage = localStoragePy()
 

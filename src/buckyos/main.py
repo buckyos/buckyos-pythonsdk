@@ -1,8 +1,8 @@
 import sys
 from typing import Optional, Dict, Any
 
-from account import get_local_account_info, clean_local_account_info, save_local_account_info, do_login
-from krpc_client import kRPCClient
+from .account import get_local_account_info, clean_local_account_info, save_local_account_info, do_login
+from .krpc_client import kRPCClient
 
 BS_SERVICE_VERIFY_HUB = "verify_hub"
 
