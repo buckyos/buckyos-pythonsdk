@@ -9,7 +9,7 @@ from .krpc_client import get_service_rpc_client
 BS_SERVICE_VERIFY_HUB = "verify_hub"
 
 
-localStorage = localStoragePy()
+localStorage = localStoragePy("buckyos")
 
 
 class AccountInfo:
