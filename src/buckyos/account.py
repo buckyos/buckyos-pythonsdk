@@ -35,8 +35,7 @@ def hash_password(username: str, password: str, nonce: Optional[int] = None) -> 
     return sha256.hexdigest()
 
 def clean_local_account_info(app_id: str) -> None:
-    if 'buckyos.account_info' in localStorage:
-        del localStorage['buckyos.account_info']
+    localStorage.removeItem('account_info')
 
     cookie_options = {
         'path': '/',
@@ -52,7 +51,7 @@ def save_local_account_info(app_id: str, account_info: AccountInfo) -> None:
         print("session_token is null, can't save account info")
         return
 
-    localStorage['buckyos.account_info'] = json.dumps(account_info.__dict__)
+    localStorage.setItem('account_info', json.dumps(account_info.__dict__))
 
     cookie_options = {
         'path': '/',
@@ -64,7 +63,7 @@ def save_local_account_info(app_id: str, account_info: AccountInfo) -> None:
     localStorage.setItem("cookie", cookie_str)
 
 def get_local_account_info(app_id: str) -> Optional[AccountInfo]:
-    account_info_str = localStorage.getItem('buckyos.account_info')
+    account_info_str = localStorage.getItem('account_info')
     if account_info_str is None:
         return None
 
@@ -81,8 +80,7 @@ async def do_login(username: str, password: str) -> Optional[AccountInfo]:
     password_hash = hash_password(username, password, login_nonce)
     print(f"password_hash: {password_hash}")
 
-    if 'account_info' in localStorage:
-        del localStorage['account_info']
+    localStorage.removeItem('account_info')
 
     try:
         rpc_client = get_service_rpc_client(BS_SERVICE_VERIFY_HUB)
