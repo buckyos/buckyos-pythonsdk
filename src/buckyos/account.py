@@ -64,7 +64,7 @@ def save_local_account_info(app_id: str, account_info: AccountInfo) -> None:
     localStorage.setItem("cookie", cookie_str)
 
 def get_local_account_info(app_id: str) -> Optional[AccountInfo]:
-    account_info_str = localStorage.get('buckyos.account_info')
+    account_info_str = localStorage.getItem('buckyos.account_info')
     if account_info_str is None:
         return None
 
