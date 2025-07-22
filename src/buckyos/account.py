@@ -1,3 +1,4 @@
+import base64
 import hashlib
 import json
 from datetime import datetime, timedelta
@@ -6,7 +7,7 @@ from localStoragePy import localStoragePy
 from .config import get_app_id
 from .krpc_client import get_service_rpc_client
 
-BS_SERVICE_VERIFY_HUB = "verify_hub"
+BS_SERVICE_VERIFY_HUB = "verify-hub"
 
 
 localStorage = localStoragePy("buckyos")
@@ -24,7 +25,7 @@ LOGIN_EVENT = 'onLogin'
 def hash_password(username: str, password: str, nonce: Optional[int] = None) -> str:
     sha256 = hashlib.sha256()
     sha256.update(f"{password}{username}.buckyos".encode('utf-8'))
-    org_password_hash_str = sha256.hexdigest()
+    org_password_hash_str = base64.b64encode(sha256.digest()).decode('utf-8')
 
     if nonce is None:
         return org_password_hash_str
@@ -32,7 +33,7 @@ def hash_password(username: str, password: str, nonce: Optional[int] = None) -> 
     sha256 = hashlib.sha256()
     salt = f"{org_password_hash_str}{nonce}"
     sha256.update(salt.encode('utf-8'))
-    return sha256.hexdigest()
+    return base64.b64encode(sha256.digest()).decode('utf-8')
 
 def clean_local_account_info(app_id: str) -> None:
     localStorage.removeItem('account_info')
@@ -93,7 +94,7 @@ async def do_login(username: str, password: str) -> Optional[AccountInfo]:
         })
 
         save_local_account_info(app_id, AccountInfo(**account_info))
-        return account_info
+        return AccountInfo(**account_info)
     except Exception as error:
         print(f"login failed: {error}")
         raise error
